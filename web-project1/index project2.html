@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Web Page with jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #colorText {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            border-radius: 5px;
+            background: white;
+        }
+
+        #hiddenBox {
+            background: #e8f4f8;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 2px solid #667eea;
+            text-align: center;
+            display: none;
+        }
+
+        #hiddenBox.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #counter {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #667eea;
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+        }
+
+        .color-option {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border-color: black;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .red {
+            background: #e74c3c;
+        }
+
+        .blue {
+            background: #3498db;
+        }
+
+        .green {
+            background: #2ecc71;
+        }
+
+        .orange {
+            background: #e67e22;
+        }
+
+        .purple {
+            background: #9b59b6;
+        }
+
+        .black {
+            background: #2c3e50;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>🎨 Interactive jQuery Demo</h1>
+
+        <!-- Section 1: Change Text Color -->
+        <div class="section">
+            <h2>1. Change Text Color</h2>
+            <p id="colorText">Click a color to change my text color!</p>
+            <div style="text-align: center;">
+                <div class="color-option red" data-color="#e74c3c"></div>
+                <div class="color-option blue" data-color="#3498db"></div>
+                <div class="color-option green" data-color="#2ecc71"></div>
+                <div class="color-option orange" data-color="#e67e22"></div>
+                <div class="color-option purple" data-color="#9b59b6"></div>
+                <div class="color-option black" data-color="#2c3e50"></div>
+            </div>
+            <button id="resetColorBtn" class="button-group">Reset Color</button>
+        </div>
+
+        <!-- Section 2: Show and Hide Elements -->
+        <div class="section">
+            <h2>2. Show & Hide Elements</h2>
+            <div class="button-group">
+                <button id="showBtn">Show Element</button>
+                <button id="hideBtn">Hide Element</button>
+                <button id="toggleBtn">Toggle Element</button>
+            </div>
+            <div id="hiddenBox">
+                <p>🎉 Hidden element revealed! You can show, hide, or toggle me.</p>
+            </div>
+        </div>
+
+        <!-- Section 3: Button Click UI -->
+        <div class="section">
+            <h2>3. Button Click Counter</h2>
+            <div id="counter">Clicks: 0</div>
+            <div class="button-group">
+                <button id="incrementBtn">➕ Click Me!</button>
+                <button id="decrementBtn">➖ Undo</button>
+                <button id="resetCountBtn">🔄 Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            // ========== SECTION 1: Change Text Color ==========
+            let currentColor = '#333';
+
+            // Color option click handler
+            $('.color-option').click(function () {
+                const color = $(this).data('color');
+                $('#colorText').css('color', color);
+                currentColor = color;
+
+                // Visual feedback
+                $('.color-option').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            // Reset color button
+            $('#resetColorBtn').click(function () {
+                $('#colorText').css('color', '#333');
+                currentColor = '#333';
+                $('.color-option').removeClass('active');
+            });
+
+
+            // ========== SECTION 2: Show and Hide ==========
+            $('#showBtn').click(function () {
+                $('#hiddenBox').show(300);
+            });
+
+            $('#hideBtn').click(function () {
+                $('#hiddenBox').hide(300);
+            });
+
+            $('#toggleBtn').click(function () {
+                $('#hiddenBox').slideToggle(300);
+            });
+
+
+            // ========== SECTION 3: Button Click Counter ==========
+            let clickCount = 0;
+
+            $('#incrementBtn').click(function () {
+                clickCount++;
+                updateCounter();
+
+                // Button animation feedback
+                $(this).css('transform', 'scale(0.95)');
+                setTimeout(() => {
+                    $(this).css('transform', 'scale(1)');
+                }, 100);
+            });
+
+            $('#decrementBtn').click(function () {
+                if (clickCount > 0) {
+                    clickCount--;
+                }
+                updateCounter();
+            });
+
+            $('#resetCountBtn').click(function () {
+                clickCount = 0;
+                updateCounter();
+            });
+
+            function updateCounter() {
+                $('#counter').text('Clicks: ' + clickCount);
+
+                // Color change based on count
+                if (clickCount === 0) {
+                    $('#counter').css('color', '#667eea');
+                } else if (clickCount < 5) {
+                    $('#counter').css('color', '#3498db');
+                } else if (clickCount < 10) {
+                    $('#counter').css('color', '#2ecc71');
+                } else if (clickCount < 15) {
+                    $('#counter').css('color', '#e67e22');
+                } else {
+                    $('#counter').css('color', '#e74c3c');
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
