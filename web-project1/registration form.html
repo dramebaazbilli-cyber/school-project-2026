@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .strength-weak {
+            color: #dc3545;
+        }
+
+        .strength-fair {
+            color: #ffc107;
+        }
+
+        .strength-good {
+            color: #17a2b8;
+        }
+
+        .strength-strong {
+            color: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container p-4">
+        <div class="card shadow-lg" style="max-width: 600px; margin: auto;">
+            <div class="card-body p-5">
+                <div class="alert alert-success alert-dismissible fade show d-none" id="successMessage" role="alert">
+                    <strong>✓ Success!</strong> Registration successful! Thank you for signing up.
+                </div>
+
+                <h1 class="card-title text-center mb-4 fw-bold">User Registration</h1>
+
+                <form id="registrationForm" novalidate>
+                    <!-- Row 1: First Name and Last Name -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="firstName" class="form-label">First Name <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="firstName" name="firstName" class="form-control" required>
+                            <div class="invalid-feedback d-block" id="firstNameError"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="lastName" class="form-label">Last Name <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" id="lastName" name="lastName" class="form-control" required>
+                            <div class="invalid-feedback d-block" id="lastNameError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Email -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <label for="email" class="form-label">Email Address <span
+                                    class="text-danger">*</span></label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                            <div class="invalid-feedback d-block" id="emailError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Phone and Date of Birth -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label for="phone" class="form-label">Phone Number <span
+                                    class="text-danger">*</span></label>
+                            <input type="tel" id="phone" name="phone" class="form-control"
+                                placeholder="e.g., +1-234-567-8900" required>
+                            <div class="invalid-feedback d-block" id="phoneError"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="dob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                            <input type="date" id="dob" name="dob" class="form-control" required>
+                            <div class="invalid-feedback d-block" id="dobError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Row 4: Gender and Country -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-6">
+                            <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                            <select id="gender" name="gender" class="form-select" required>
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="invalid-feedback d-block" id="genderError"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="country" class="form-label">Country <span class="text-danger">*</span></label>
+                            <select id="country" name="country" class="form-select" required>
+                                <option value="">Select Country</option>
+                                <option value="usa">United States</option>
+                                <option value="uk">United Kingdom</option>
+                                <option value="canada">Canada</option>
+                                <option value="india">India</option>
+                                <option value="australia">Australia</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <div class="invalid-feedback d-block" id="countryError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Row 5: Password -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                            <input type="password" id="password" name="password" class="form-control"
+                                placeholder="Min. 8 characters" required>
+                            <div class="form-text small fw-bold mt-2" id="passwordStrength"></div>
+                            <div class="invalid-feedback d-block" id="passwordError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Row 6: Confirm Password -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <label for="confirmPassword" class="form-label">Confirm Password <span
+                                    class="text-danger">*</span></label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                                required>
+                            <div class="invalid-feedback d-none" id="confirmPasswordError"></div>
+                        </div>
+                    </div>
+
+                    <!-- Row 7: Terms and Conditions -->
+                    <div class="row g-3 mt-2">
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" id="terms" name="terms" class="form-check-input" required>
+                                <label for="terms" class="form-check-label">I agree to the Terms and Conditions <span
+                                        class="text-danger">*</span></label>
+                                <div class="invalid-feedback d-block" id="termsError"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 8: Buttons -->
+                    <div class="row g-3 mt-3">
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-primary w-100">Register</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="reset" class="btn btn-secondary w-100">Clear</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const form = document.getElementById('registrationForm');
+        const passwordField = document.getElementById('password');
+        const passwordStrengthDiv = document.getElementById('passwordStrength');
+        const successMessage = document.getElementById('successMessage');
+
+        // Validation Rules
+        const validationRules = {
+            firstName: {
+                required: true,
+                minLength: 2,
+                maxLength: 50,
+                pattern: /^[a-zA-Z\s'-]+$/,
+                errorMessages: {
+                    required: 'First name is required',
+                    minLength: 'First name must be at least 2 characters',
+                    maxLength: 'First name cannot exceed 50 characters',
+                    pattern: 'First name contains invalid characters'
+                }
+            },
+            lastName: {
+                required: true,
+                minLength: 2,
+                maxLength: 50,
+                pattern: /^[a-zA-Z\s'-]+$/,
+                errorMessages: {
+                    required: 'Last name is required',
+                    minLength: 'Last name must be at least 2 characters',
+                    maxLength: 'Last name cannot exceed 50 characters',
+                    pattern: 'Last name contains invalid characters'
+                }
+            },
+            email: {
+                required: true,
+                pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                errorMessages: {
+                    required: 'Email is required',
+                    pattern: 'Please enter a valid email address'
+                }
+            },
+            phone: {
+                required: true,
+                pattern: /^[\d\s\-\+\(\)]{10,}$/,
+                errorMessages: {
+                    required: 'Phone number is required',
+                    pattern: 'Please enter a valid phone number (at least 10 digits)'
+                }
+            },
+            dob: {
+                required: true,
+                errorMessages: {
+                    required: 'Date of birth is required'
+                }
+            },
+            gender: {
+                required: true,
+                errorMessages: {
+                    required: 'Please select a gender'
+                }
+            },
+            country: {
+                required: true,
+                errorMessages: {
+                    required: 'Please select a country'
+                }
+            },
+            password: {
+                required: true,
+                minLength: 8,
+                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+                errorMessages: {
+                    required: 'Password is required',
+                    minLength: 'Password must be at least 8 characters',
+                    pattern: 'Password must contain uppercase, lowercase, number, and special character'
+                }
+            },
+            confirmPassword: {
+                required: true,
+                match: 'password',
+                errorMessages: {
+                    required: 'Please confirm your password',
+                    match: 'Passwords do not match'
+                }
+            },
+            terms: {
+                required: true,
+                errorMessages: {
+                    required: 'You must agree to the terms and conditions'
+                }
+            }
+        };
+
+        // Validate individual field
+        function validateField(fieldName) {
+            const field = document.getElementById(fieldName);
+            const errorDiv = document.getElementById(fieldName + 'Error');
+            const rules = validationRules[fieldName];
+
+            if (!rules) return true;
+
+            let isValid = true;
+            let errorMessage = '';
+
+            const value = field.type === 'checkbox' ? field.checked : field.value.trim();
+
+            // Check required
+            if (rules.required && !value) {
+                isValid = false;
+                errorMessage = rules.errorMessages.required;
+            }
+
+            // Check minimum length
+            if (isValid && rules.minLength && value.length < rules.minLength) {
+                isValid = false;
+                errorMessage = rules.errorMessages.minLength;
+            }
+
+            // Check maximum length
+            if (isValid && rules.maxLength && value.length > rules.maxLength) {
+                isValid = false;
+                errorMessage = rules.errorMessages.maxLength;
+            }
+
+            // Check pattern
+            if (isValid && rules.pattern && value && !rules.pattern.test(value)) {
+                isValid = false;
+                errorMessage = rules.errorMessages.pattern;
+            }
+
+            // Check match
+            if (isValid && rules.match && value) {
+                const matchField = document.getElementById(rules.match);
+                if (value !== matchField.value) {
+                    isValid = false;
+                    errorMessage = rules.errorMessages.match;
+                }
+            }
+
+            // Check age
+            if (isValid && fieldName === 'dob' && value) {
+                const birthDate = new Date(value);
+                const today = new Date();
+                const age = today.getFullYear() - birthDate.getFullYear();
+                if (age < 18) {
+                    isValid = false;
+                    errorMessage = 'You must be at least 18 years old';
+                }
+            }
+
+            // Display/hide error
+            if (!isValid) {
+                field.classList.add('is-invalid');
+                field.classList.remove('is-valid');
+                errorDiv.textContent = errorMessage;
+                errorDiv.classList.remove('d-none');
+            } else {
+                field.classList.remove('is-invalid');
+                field.classList.add('is-valid');
+                errorDiv.classList.add('d-none');
+            }
+
+            return isValid;
+        }
+
+        // Password strength indicator
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            if (password.length >= 8) strength++;
+            if (password.length >= 12) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/\d/.test(password)) strength++;
+            if (/[@$!%*?&]/.test(password)) strength++;
+
+            const strengthLevels = ['Weak', 'Fair', 'Good', 'Strong'];
+            const strengthClasses = ['strength-weak', 'strength-fair', 'strength-good', 'strength-strong'];
+
+            if (password.length === 0) {
+                passwordStrengthDiv.innerHTML = '';
+            } else {
+                const level = Math.min(strength - 1, 3);
+                passwordStrengthDiv.innerHTML = `Strength: <span class="${strengthClasses[level]}">${strengthLevels[level]}</span>`;
+            }
+        }
+
+        // Add real-time validation
+        Object.keys(validationRules).forEach(fieldName => {
+            const field = document.getElementById(fieldName);
+            if (field) {
+                field.addEventListener('blur', () => validateField(fieldName));
+                field.addEventListener('input', () => {
+                    if (fieldName === 'password') {
+                        checkPasswordStrength(field.value);
+                    }
+                    validateField(fieldName);
+                });
+                field.addEventListener('change', () => validateField(fieldName));
+            }
+        });
+
+        // Form submission
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // Validate all fields
+            let isFormValid = true;
+            Object.keys(validationRules).forEach(fieldName => {
+                if (!validateField(fieldName)) {
+                    isFormValid = false;
+                }
+            });
+
+            if (isFormValid) {
+                // Show success message
+                successMessage.classList.remove('d-none');
+                form.classList.add('d-none');
+
+                // Reset form after 3 seconds
+                setTimeout(() => {
+                    form.reset();
+                    form.classList.remove('d-none');
+                    successMessage.classList.add('d-none');
+                    document.querySelectorAll('.form-control, .form-select').forEach(field => {
+                        field.classList.remove('is-valid', 'is-invalid');
+                    });
+                    document.querySelectorAll('.invalid-feedback').forEach(error => {
+                        error.classList.add('d-none');
+                    });
+                    passwordStrengthDiv.innerHTML = '';
+                }, 3000);
+            }
+        });
+
+        // Clear error on focus
+        document.querySelectorAll('input, select').forEach(field => {
+            field.addEventListener('focus', function () {
+                const errorDiv = document.getElementById(this.id + 'Error');
+                if (errorDiv) {
+                    errorDiv.classList.add('d-none');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
